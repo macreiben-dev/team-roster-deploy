@@ -1,19 +1,52 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+resources:
+  repositories:
+    - repository: sourceRepository
+      type: github
+      endpoint: macreiben-dev
+      name: macreiben-dev/team-roster-deploy
+
+variables:
+  - group: TeamRoster-Api-Prod
 
 trigger:
-- main
+  - main
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  - task: SSH@0
+    displayName: "Create deploy directory"
+    inputs:
+      sshEndpoint: ssh-fusion-auth
+      runOptions: "commands"
+      commands: "mkdir -p ~/deploy_team-roster-container"
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - task: CopyFilesOverSSH@0
+    displayName: "Copy compose to deploy directory"
+    inputs:
+      cleanTargetFolder: true
+      sshEndpoint: ssh-fusion-auth
+      contents: "**/*.yml"
+      targetFolder: "~/deploy_team-roster-container"
+      readyTimeout: "20000"
+
+  - task: SSH@0
+    displayName: "run docker compose"
+    inputs:
+      sshEndpoint: ssh-team-roster
+      runOptions: "inline"
+      inline: |
+        export SERVER_PORT="$(SERVER_PORT)"
+        export FUSIONAUTH_PORT="$(FUSIONAUTH_PORT)"
+        export FUSIONAUTH_SERVERNAME="$(FUSIONAUTH_SERVERNAME)"
+        export FUSIONAUTH_SERVERNAME_FOR_TOKEN="$(FUSIONAUTH_SERVERNAME_FOR_TOKEN)"
+        export ISSUER_URL="$(ISSUER_URL)"
+        export CLIENT_ID="$(CLIENT_ID)"
+        export CLIENT_SECRET="$(CLIENT_SECRET)"
+        export REDIRECT_URI="$(REDIRECT_URI)"
+        export APPLICATION_ID="$(APPLICATION_ID)"
+        export API_KEY="$(API_KEY)"
+        export FRONT_APP_ROOT_URL="$(FRONT_APP_ROOT_URL)"
+        export TENANT_ID="$(TENANT_ID)"
+        sudo -E bash -c 'docker compose -f ~/deploy_team-roster-container/docker-compose.yml up -d 2>&1'
