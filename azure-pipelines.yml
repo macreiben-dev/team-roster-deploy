@@ -48,4 +48,4 @@ steps:
         export API_KEY="$(API_KEY)"
         export FRONT_APP_ROOT_URL="$(FRONT_APP_ROOT_URL)"
         export TENANT_ID="$(TENANT_ID)"
-        sudo -E bash -c 'docker compose -f /home/team-roster-deploy/deploy_team-roster-container/docker-compose.yml up -d 2>&1'
+        sudo -E bash -c 'docker compose -f /home/team-roster-deploy/deploy_team-roster-container/src/docker-compose.yml up -d 2>&1'
