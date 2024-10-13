@@ -2,12 +2,12 @@ services:
   api:
     image: team-roster-api:latest
     ports:
-      - ${API_PORT}:9001
+      - ${SERVER_PORT}:9001
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
       - NODE_ENV=production
-      - SERVER_PORT=${API_PORT}
+      - SERVER_PORT=${SERVER_PORT}
       - FUSIONAUTH_PORT=${FUSIONAUTH_PORT}
       - FUSIONAUTH_SERVERNAME=${FUSIONAUTH_EXTERNAL_SERVERNAME}
       - FUSIONAUTH_SERVERNAME_FOR_TOKEN=host.docker.internal
