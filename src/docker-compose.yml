@@ -23,5 +23,5 @@ services:
     ports:
       - ${FRONT_PORT}:80
     depends_on:
-      - api
+      - team-roster-api
 
