@@ -28,7 +28,7 @@ steps:
       cleanTargetFolder: true
       sshEndpoint: ssh-team-roster
       contents: "**/*.yml"
-      targetFolder: "~/deploy_team-roster-container"
+      targetFolder: "/home/team-roster-deploy/deploy_team-roster-container"
       readyTimeout: "20000"
 
   - task: SSH@0
