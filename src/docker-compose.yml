@@ -1,5 +1,5 @@
 services:
-  api:
+  team-roster-api:
     image: team-roster-api:latest
     ports:
       - ${SERVER_PORT}:9001
@@ -18,7 +18,7 @@ services:
       - APPLICATION_ID=${APPLICATION_ID}
       - FRONT_APP_ROOT_URL=${FRONT_APP_ROOT_URL}
       - TENANT_ID=${TENANT_ID}
-  front:
+  team-roster-front:
     image: team-roster-front:latest
     ports:
       - ${FRONT_PORT}:80
