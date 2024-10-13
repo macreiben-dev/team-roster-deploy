@@ -18,7 +18,7 @@ steps:
   - task: SSH@0
     displayName: "Create deploy directory"
     inputs:
-      sshEndpoint: ssh-fusion-auth
+      sshEndpoint: ssh-team-roster
       runOptions: "commands"
       commands: "mkdir -p ~/deploy_team-roster-container"
 
@@ -26,7 +26,7 @@ steps:
     displayName: "Copy compose to deploy directory"
     inputs:
       cleanTargetFolder: true
-      sshEndpoint: ssh-fusion-auth
+      sshEndpoint: ssh-team-roster
       contents: "**/*.yml"
       targetFolder: "~/deploy_team-roster-container"
       readyTimeout: "20000"
